@@ -10,3 +10,4 @@
 *.app
 .snapshots/*
 node_modules
+app
