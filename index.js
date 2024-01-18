@@ -1,32 +1,36 @@
-#!/usr/bin/env node
-
+'use strict';
 import inquirer from 'inquirer';
 import { exec } from 'child_process';
-import { generateServer, generateRouter, generateConfig, generateModel } from './lib/fileGenerators.js';
+import { generateServer, generateRouter, generateConfig, generateModel, createDirectory } from './lib/fileGenerators.js';
 
 async function main() {
   const answers = await inquirer.prompt([
     {
       type: 'list',
       name: 'moduleSystem',
-      message: 'Choose your module system:',
+      message: 'Pilih sistem modul Anda:',
       choices: ['ES6', 'CommonJS'],
     },
     {
       type: 'list',
       name: 'database',
-      message: 'Select your database:',
+      message: 'Pilih database Anda:',
       choices: ['MySQL', 'PostgreSQL', 'SQLite', 'MSSQL'],
     },
     {
       type: 'confirm',
       name: 'sample',
-      message: 'Want to create sample model?',
+      message: 'Ingin membuat model sampel?',
     },
     {
       type: 'confirm',
       name: 'installNpm',
-      message: 'Do you want to install npm packages now?',
+      message: 'Apakah Anda ingin menginstal paket npm sekarang?',
+    },
+    {
+      type: 'input',
+      name: 'directoryName',
+      message: 'Masukkan nama direktori yang ingin dibuat:',
     }
   ]);
 
@@ -34,6 +38,7 @@ async function main() {
   generateRouter(answers);
   generateConfig(answers);
   generateModel(answers);
+  createDirectory(answers.directoryName);
 
   if (answers.installNpm) {
     installNpmPackages();
@@ -41,10 +46,10 @@ async function main() {
 }
 
 function installNpmPackages() {
-  console.log('Installing npm packages...');
+  console.log('Menginstal paket npm...');
   exec('npm install', (error, stdout, stderr) => {
     if (error) {
-      console.error(`Error occurred: ${error}`);
+      console.error(`Terjadi kesalahan: ${error}`);
       return;
     }
     console.log(stdout);
