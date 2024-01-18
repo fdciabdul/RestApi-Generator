@@ -2,7 +2,7 @@
 
 import inquirer from 'inquirer';
 import { exec } from 'child_process';
-import { generateServer, generateRouter, generateConfig, generateModel, createDirectory } from './lib/fileGenerators.js';
+import { generateServer, generateRouter, generateConfig, generateModel, createDirectory } from '../lib/fileGenerators.js';
 
 async function main() {
   const answers = await inquirer.prompt([
