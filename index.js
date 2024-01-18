@@ -38,7 +38,8 @@ async function main() {
   generateRouter(answers);
   generateConfig(answers);
   generateModel(answers);
-  createDirectory(answers.directoryName);
+  const dirPath = await createDirectory(answers.directoryName);
+  process.chdir(dirPath);
 
   if (answers.installNpm) {
     installNpmPackages();
